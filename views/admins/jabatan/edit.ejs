@@ -1,0 +1,29 @@
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Jabatan' }) %>
+<%- include('../../partials/navs/__nav-admin.ejs') %>
+<%- include('../../partials/messages/__messages-dashbaord.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Edit Jabatan</h4>
+                  <form action="/admin/jabatan/update/<%= jabatan.id %>" method="POST" data-loading>
+                    <div class="form-group">
+                      <label for="nama_jabatan">Nama Jabatan</label>
+                      <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan" value="<%= jabatan.nama_jabatan %>" placeholder="Masukkan nama jabatan" required>
+                    </div>
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                      <a href="/admin/jabatan" class="btn btn-light" data-loading>Kembali</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/scripts/__script-dashbord.ejs') %>
