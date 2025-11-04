@@ -11,7 +11,7 @@ router.get('/daftar-pegawai', async (req, res) => {
         res.render('auths/register-pegawai', { data: req.flash('data')[0] })
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Internal server error')
+        req.flash('error', 'Terjadi kesalahan pada server')
         res.redirect('/')
     }
 })
@@ -87,80 +87,61 @@ router.post('/reg', async (req, res) => {
         res.redirect('/daftar-pegawai')
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Internal server error')
+        req.flash('error', 'Terjadi kesalahan pada server')
         req.flash('data', data)
         res.redirect('/')
     }
 })
 
-router.get('/login', async (req, res) => {
+router.get('/masuk', async (req, res) => {
     try {
         res.render('auths/login', { data: req.flash('data')[0] })
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Internal server error')
+        req.flash('error', 'Terjadi kesalahan pada server')
         res.redirect('/')
     }
 })
 
 router.post('/log', async (req, res) => {
-    const { email, password } = req.body
-    const data = { email, password }
+    const { nomor_admin, kata_sandi } = req.body
+    const data = { nomor_admin, kata_sandi }
 
     try {
-        if (!email) {
-            req.flash('error', 'Email is required')
+        if (!nomor_admin) {
+            req.flash('error', 'Nomor admin tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/login')
+            return res.redirect('/masuk')
         }
 
-        if (!password) {
-            req.flash('error', 'Password is required')
+        if (!kata_sandi) {
+            req.flash('error', 'Kata sandi tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/login')
+            return res.redirect('/masuk')
         }
 
-        let users = null
-        let role = null
+        const admin = await Admin.login(data)
 
-        users = await User.login(data)
-        if (users) {
-            role = 'User'
-        } else {
-            users = await Admin.login(data)
-            if (users) {
-                role = 'Admin'
-            }
-        }
-
-        if (!users) {
-            req.flash('error', 'Email not found')
+        if (!admin) {
+            req.flash('error', 'Nomor pegawai tidak ditemukan')
             req.flash('data', data)
-            return res.redirect('/login')
+            return res.redirect('/masuk')
         }
 
-        if (!await bcrypt.compare(password, users.password)) {
-            req.flash('error', 'Password incorrect')
+        if (!await bcrypt.compare(kata_sandi, admin.kata_sandi)) {
+            req.flash('error', 'Kata sandi salah')
             req.flash('data', data)
-            return res.redirect('/login')
+            return res.redirect('/masuk')
         }
 
-        if (users.status != 'Active') {
-            req.flash('error', 'Account is not active')
-            req.flash('data', data)
-            return res.redirect('/login')
-        }
+        req.session.userId = admin.id
 
-        req.session.userId = users.id
-        req.session.role = role
+        req.flash('success', 'Berhasil masuk')
 
-        req.flash('success', 'Login successful')
-
-        if (req.session.role == "User") return res.redirect('/user/dashboard')
-        if (req.session.role == "Admin") return res.redirect('/admin/dashboard')
+        res.redirect('/admin/dashboard')
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Internal server error')
+        req.flash('error', 'Terjadi kesalahan pada server')
         req.flash('data', data)
         res.redirect('/')
     }
@@ -170,12 +151,12 @@ router.get('/logout', async(req, res) => {
     try {
         const role = req.session.role
 
-        req.flash('success', 'Logout successful')
+        req.flash('success', 'Berhasil keluar')
         req.session.destroy()
         res.redirect('/')
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Internal server error')
+        req.flash('error', 'Terjadi kesalahan pada server')
         if (req.session.role == "Admin") return res.redirect('/admin/dashboard')
         if (req.session.role == "User") return res.redirect('/user/dashboard')
     }
