@@ -29,6 +29,33 @@ class Pegawai {
             throw err
         }
     }
+
+    static async countPegawaiAktif() {
+        try {
+            const [rows] = await connection.query(`SELECT COUNT(*) AS count_pegawai_aktif FROM pegawai WHERE status_akun = 'Aktif'`)
+            return rows[0].count_pegawai_aktif
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async countPegawaiProses() {
+        try {
+            const [rows] = await connection.query(`SELECT COUNT(*) AS count_pegawai_proses FROM pegawai WHERE status_akun = 'Proses'`)
+            return rows[0].count_pegawai_proses
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async countPegawaiNotRegistered() {
+        try {
+            const [rows] = await connection.query(`SELECT COUNT(*) AS count_pegawai_belum_terdaftar FROM pegawai WHERE status_akun IS NULL and kata_sandi IS NULL`)
+            return rows[0].count_pegawai_belum_terdaftar
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = Pegawai

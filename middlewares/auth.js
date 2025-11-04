@@ -1,16 +1,15 @@
 const authAdmin = async (req, res, next) => {
     try {
-        const role = req.session.role
-        if(role == "Admin") {
+        if(req.session.adminId) {
             return next()
         } else {
             req.flash('error', 'Anda tidak memiliki akses ke halaman tersebut')
-            res.redirect('/login')
+            res.redirect('/masuk')
         }
     } catch(err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/login')
+        res.redirect('/masuk')
     }
 }
 

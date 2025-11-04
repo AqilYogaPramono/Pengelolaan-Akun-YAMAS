@@ -1,15 +1,50 @@
 <%- include('../partials/headers/__header-dashbaord.ejs', { title: 'Dashboard Admin' }) %>
-
 <%- include('../partials/navs/__nav-admin.ejs') %>
+<%- include('../partials/messages/__messages-dashbaord.ejs') %>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-4 py-4">
-    <%- include('../partials/messages/__messages-dashbaord.ejs') %>
-    <h4 class="mb-4">Selamat Datang, <span class="text-primary"><%= users.email %></span></h4>
-    <div class="card shadow-sm">
-    </div>
-</main>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4 grid-margin stretch-card">
+                <div class="stat-card card w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-label">Pegawai Dalam Proses</div>
+                                <div class="stat-number" data-count="<%= pustakawanProses %>"><%= pustakawanProses %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-12 col-sm-6 col-lg-4 grid-margin stretch-card">
+                <div class="stat-card card w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-label">Pegawai Aktif</div>
+                                <div class="stat-number" data-count="<%= pustakawanAktif %>"><%= pustakawanAktif %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4 grid-margin stretch-card">
+                <div class="stat-card card w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-label">Pegawai Belum Daftar Ulang</div>
+                                <div class="stat-number" data-count="<%= pustakawanNotReRegistered %>"><%= pustakawanNotReRegistered %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<%- include('../partials/scripts/__script-dashbaord.ejs') %>
+<%- include('../partials/scripts/__script-dashbord.ejs') %>

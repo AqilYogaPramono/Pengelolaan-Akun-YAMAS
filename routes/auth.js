@@ -11,7 +11,7 @@ router.get('/daftar-pegawai', async (req, res) => {
         res.render('auths/register-pegawai', { data: req.flash('data')[0] })
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Terjadi kesalahan pada server')
+        req.flash('error', 'Internal server error')
         res.redirect('/')
     }
 })
@@ -87,7 +87,7 @@ router.post('/reg', async (req, res) => {
         res.redirect('/daftar-pegawai')
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Terjadi kesalahan pada server')
+        req.flash('error', 'Internal server error')
         req.flash('data', data)
         res.redirect('/')
     }
@@ -98,7 +98,7 @@ router.get('/masuk', async (req, res) => {
         res.render('auths/login', { data: req.flash('data')[0] })
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Terjadi kesalahan pada server')
+        req.flash('error', 'Internal server error')
         res.redirect('/')
     }
 })
@@ -134,14 +134,14 @@ router.post('/log', async (req, res) => {
             return res.redirect('/masuk')
         }
 
-        req.session.userId = admin.id
+        req.session.adminId = admin.id
 
-        req.flash('success', 'Berhasil masuk')
+        req.flash('success', 'Login Berhasil')
 
         res.redirect('/admin/dashboard')
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Terjadi kesalahan pada server')
+        req.flash('error', 'Internal server error')
         req.flash('data', data)
         res.redirect('/')
     }
@@ -151,12 +151,12 @@ router.get('/logout', async(req, res) => {
     try {
         const role = req.session.role
 
-        req.flash('success', 'Berhasil keluar')
+        req.flash('success', 'Logout successful')
         req.session.destroy()
         res.redirect('/')
     } catch (err) {
         console.error(err)
-        req.flash('error', 'Terjadi kesalahan pada server')
+        req.flash('error', 'Internal server error')
         if (req.session.role == "Admin") return res.redirect('/admin/dashboard')
         if (req.session.role == "User") return res.redirect('/user/dashboard')
     }

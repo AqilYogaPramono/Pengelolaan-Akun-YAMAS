@@ -10,9 +10,9 @@ class Admin {
         }
     }
 
-    static async getNA(id) {
+    static async getNama(id) {
         try {
-            const [rows] = await connection.query(`select nomor_admin from admin where id = ? `, [id])
+            const [rows] = await connection.query(`select nama from admin where id = ? `, [id])
             return rows[0]
         } catch (err) {
             throw err

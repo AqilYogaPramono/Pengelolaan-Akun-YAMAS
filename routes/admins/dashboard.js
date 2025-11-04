@@ -1,13 +1,19 @@
 const express = require('express')
 
-const admin = require('../../models/Admin')
+const Admin = require('../../models/Admin')
+const Pegawai = require('../../models/Pegawai')
 const { authAdmin } = require('../../middlewares/auth')
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/', authAdmin, async (req, res) => {
     try {
-        res.render('admins/dashboard')
+        const admin = await Admin.getNama(req.session.adminId)
+        const pustakawanProses = await Pegawai.countPegawaiProses()
+        const pustakawanAktif = await Pegawai.countPegawaiAktif()
+        const pustakawanNotReRegistered = await Pegawai.countPegawaiNotRegistered()
+
+        res.render('admins/dashboard', {admin, pustakawanProses, pustakawanAktif, pustakawanNotReRegistered})
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
