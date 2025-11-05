@@ -149,16 +149,13 @@ router.post('/log', async (req, res) => {
 
 router.get('/logout', async(req, res) => {
     try {
-        const role = req.session.role
-
-        req.flash('success', 'Logout successful')
         req.session.destroy()
+        req.flash('success', 'Logout successful')
         res.redirect('/')
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal server error')
-        if (req.session.role == "Admin") return res.redirect('/admin/dashboard')
-        if (req.session.role == "User") return res.redirect('/user/dashboard')
+        if (req.session.adminId) return res.redirect('/admin/dashboard')
     }
 })
 
