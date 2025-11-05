@@ -6,7 +6,7 @@ const Admin = require('../models/Admin')
 
 const router = express.Router()
 
-router.get('/daftar-pegawai', async (req, res) => {
+router.get('/daftar-ulang', async (req, res) => {
     try {
         res.render('auths/register-pegawai', { data: req.flash('data')[0] })
     } catch (err) {
@@ -17,74 +17,74 @@ router.get('/daftar-pegawai', async (req, res) => {
 })
 
 router.post('/reg', async (req, res) => {
-    const { nama, nomor_pegawai, kata_sandi, konfirmasi_kata_sandi } = req.body
+    const { nomor_pegawai, kata_sandi, konfirmasi_kata_sandi } = req.body
     const data = { nomor_pegawai, kata_sandi }
 
     try {
         if (!data.nomor_pegawai) {
             req.flash('error', 'Nomor pegawai tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (!data.kata_sandi) {
             req.flash('error', 'Kata sandi tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (!konfirmasi_kata_sandi) {
             req.flash('error', 'Konfirmasi kata sandi tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (await Pegawai.checkNP(data)) {
             req.flash('error', 'Nomor pegawai anda belum terdaftar oleh Admin')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         const accountAlreadyExists = await Pegawai.getAllByNP(data)
         if (accountAlreadyExists.kata_sandi && accountAlreadyExists.status_akun) {
             req.flash('error', 'Nomor pegawai anda sudah terdaftar')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (data.kata_sandi.length < 6) {
             req.flash('error', 'Kata sandi harus terdiri dari minimal 6 karakter')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (!/[A-Z]/.test(data.kata_sandi)) {
             req.flash('error', 'Kata sandi harus mengandung minimal 1 huruf kapital')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (!/[a-z]/.test(data.kata_sandi)) {
             req.flash('error', 'Kata sandi harus mengandung minimal 1 huruf kecil')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (!/\d/.test(data.kata_sandi)) {
             req.flash('error', 'Kata sandi harus mengandung minimal 1 angka')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         if (data.kata_sandi != konfirmasi_kata_sandi) {
             req.flash('error', 'Kata sandi dan konfirmasi kata sandi tidak cocok')
             req.flash('data', data)
-            return res.redirect('/daftar-pegawai')
+            return res.redirect('/daftar-ulang')
         }
 
         await Pegawai.register(data)
         req.flash('success', 'Registrasi berhasil, silahkan tunggu aktivasi dari admin')
-        res.redirect('/daftar-pegawai')
+        res.redirect('/daftar-ulang')
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal server error')

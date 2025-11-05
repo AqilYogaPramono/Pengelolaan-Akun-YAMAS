@@ -5,6 +5,7 @@ class Pegawai {
     static async checkNP(data) {
         try {
             const [rows] = await connection.query('SELECT nomor_pegawai FROM pegawai WHERE nomor_pegawai = ?',[data.nomor_pegawai])
+            console.log(typeof(data.nomor_pegawai), rows, data.nomor_pegawai)
             return rows.length == 0
         } catch (err) {
             throw err
