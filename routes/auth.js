@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.get('/daftar-ulang', async (req, res) => {
     try {
-        res.render('auths/register-pegawai', { data: req.flash('data')[0] })
+        res.render('auths/daftar-ulang', { data: req.flash('data')[0] })
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal server error')
@@ -93,7 +93,7 @@ router.post('/reg', async (req, res) => {
     }
 })
 
-router.get('/masuk', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         res.render('auths/login', { data: req.flash('data')[0] })
     } catch (err) {
@@ -111,13 +111,13 @@ router.post('/log', async (req, res) => {
         if (!nomor_admin) {
             req.flash('error', 'Nomor admin tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/masuk')
+            return res.redirect('/')
         }
 
         if (!kata_sandi) {
             req.flash('error', 'Kata sandi tidak boleh kosong')
             req.flash('data', data)
-            return res.redirect('/masuk')
+            return res.redirect('/')
         }
 
         const admin = await Admin.login(data)
@@ -125,13 +125,13 @@ router.post('/log', async (req, res) => {
         if (!admin) {
             req.flash('error', 'Nomor pegawai tidak ditemukan')
             req.flash('data', data)
-            return res.redirect('/masuk')
+            return res.redirect('/')
         }
 
         if (!await bcrypt.compare(kata_sandi, admin.kata_sandi)) {
             req.flash('error', 'Kata sandi salah')
             req.flash('data', data)
-            return res.redirect('/masuk')
+            return res.redirect('/')
         }
 
         req.session.adminId = admin.id
