@@ -237,6 +237,7 @@
     display: inline-flex; 
     gap: .5rem; 
     align-items: center; 
+    flex-wrap: wrap;
 }
 @media (max-width: 575.98px) {
     .btn-actions { gap: .4rem; }
@@ -348,6 +349,17 @@
         justify-content: center !important;
         width: 100%;
         display: flex !important;
+        max-width: 260px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+    .table td[data-label="Aksi"] .btn-actions .btn,
+    .table td.text-right[data-label="Aksi"] .btn-actions .btn {
+        flex: 0 1 auto;
+        min-width: 80px;
+        max-width: 100%;
+        text-align: center;
     }
     .table td[data-label="Aksi"],
     .table td.text-right[data-label="Aksi"] {
