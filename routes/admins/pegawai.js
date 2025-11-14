@@ -2,6 +2,7 @@ const express = require('express')
 
 const Admin = require('../../models/Admin')
 const Pegawai = require('../../models/Pegawai')
+const Aplikasi = require('../../models/Aplikasi')
 const { authAdmin } = require('../../middlewares/auth')
 const { generateNomorPegawai } = require('../../middlewares/generate-nomor-pegawai')
 
@@ -26,23 +27,23 @@ router.get('/', authAdmin, async (req, res) => {
 router.get('/buat', authAdmin, async(req, res) => {
     try {
         const admin = await Admin.getNama(req.session.adminId)
-        const jabatan = await Jabatan.getAll()
+        const aplikasi = await Aplikasi.getAll()
 
         res.render('admins/pegawai/create', {
             admin,
-            jabatan,
+            aplikasi,
             data: req.flash('data')[0]
         })
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/admin/dashboard')
+        res.redirect('/admin/pegawai')
     }
 })
 
 router.post('/create', authAdmin, generateNomorPegawai, async (req, res) => {
     try {
-        const { nama, id_jabatan } = req.body
+        const { nama, id_aplikasi } = req.body
         const { nomorPegawai } = req
         const data = { nama, nomor_pegawai: nomorPegawai }
 
@@ -52,8 +53,8 @@ router.post('/create', authAdmin, generateNomorPegawai, async (req, res) => {
             return res.redirect('/admin/pegawai/buat')
         }
 
-        if (!id_jabatan) {
-            req.flash('error', 'Jabatan wajib di isi')
+        if (!id_aplikasi) {
+            req.flash('error', 'Aplikasi wajib di isi')
             req.flash('data', data)
             return res.redirect('/admin/pegawai/buat')
         }
@@ -61,12 +62,13 @@ router.post('/create', authAdmin, generateNomorPegawai, async (req, res) => {
         const result = await Pegawai.store(data)
         const idKaryawan = result.insertId
         
-        if (id_jabatan) {
-            const jabatanArray = Array.isArray(id_jabatan) ? id_jabatan : [id_jabatan]
-            for (const id of jabatanArray) {
-                await Jabatan.storePegawaiJabatan(idKaryawan, id)
+        if (id_aplikasi) {
+            const aplikasiArray = Array.isArray(id_aplikasi) ? id_aplikasi : [id_aplikasi]
+            for (const id of aplikasiArray) {
+                await Aplikasi.storePegawaiAplikasi(idKaryawan, id)
             }
         }
+
         req.flash('success', 'Data pegawai berhasil ditambahkan')
         res.redirect('/admin/pegawai')
     } catch (err) {
@@ -79,7 +81,6 @@ router.post('/create', authAdmin, generateNomorPegawai, async (req, res) => {
 router.post('/update-status-account/:id', authAdmin, async (req, res) => {
     try {
         const { id } = req.params
-        console.log(id)
         const { status_akun } = req.body
         const data = { status_akun }
 
@@ -120,8 +121,8 @@ router.post('/delete/:id', authAdmin, async (req, res) => {
 
         const pegawai = await Pegawai.getById(id)
         if (pegawai.status_akun !=  'Non-Aktif') {
-            req.flash('error', 'Ubah Status Akun manjad Non-Aktif untuk menghapsu Akun')
-            return res.redirect('/admin/jabatan')
+            req.flash('error', 'Ubah Status Akun menjadi Non-Aktif untuk menghapus Akun')
+            return res.redirect('/admin/pegawai')
         }
 
         await Pegawai.delete(id)

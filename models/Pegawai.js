@@ -5,7 +5,6 @@ class Pegawai {
     static async checkNP(data) {
         try {
             const [rows] = await connection.query('SELECT nomor_pegawai FROM pegawai WHERE nomor_pegawai = ?',[data.nomor_pegawai])
-            console.log(typeof(data.nomor_pegawai), rows, data.nomor_pegawai)
             return rows.length == 0
         } catch (err) {
             throw err
@@ -60,7 +59,7 @@ class Pegawai {
 
     static async getAll() {
         try {
-            const [rows] = await connection.query(`SELECT p.id, p.nama, p.nomor_pegawai, p.status_akun, COALESCE(GROUP_CONCAT(DISTINCT j.nama_jabatan ORDER BY j.nama_jabatan SEPARATOR ', '), '-') AS jabatan FROM pegawai AS p LEFT JOIN pegawai_jabatan AS pj ON p.id = pj.id_pegawai LEFT JOIN jabatan AS j ON pj.id_jabatan = j.id GROUP BY p.id, p.nama, p.nomor_pegawai, p.status_akun ORDER BY p.waktu_dibuat DESC`)
+            const [rows] = await connection.query(`SELECT p.id, p.nama, p.nomor_pegawai, p.status_akun, COALESCE( GROUP_CONCAT( DISTINCT CONCAT(a.nama_aplikasi, ' - ', a.hak_akses) ORDER BY a.nama_aplikasi SEPARATOR ', ' ), '-' ) AS aplikasi FROM pegawai AS p LEFT JOIN pegawai_aplikasi AS pa ON p.id = pa.id_pegawai LEFT JOIN aplikasi AS a ON pa.id_aplikasi = a.id GROUP BY p.id, p.nama, p.nomor_pegawai, p.status_akun ORDER BY p.waktu_dibuat DESC`)
             return rows
         } catch (err) {
             throw err

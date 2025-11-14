@@ -19,7 +19,7 @@
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>NP</th>
-                                        <th>Jabatan</th>
+                                        <th>Aplikasi</th>
                                         <th>Status</th>
                                         <th style="width: 220px;" class="text-right">Aksi</th>
                                     </tr>
@@ -31,7 +31,7 @@
                                                 <td data-label="No"><%= i + 1 %></td>
                                                 <td data-label="Nama"><%= data[i].nama %></td>
                                                 <td data-label="NP"><%= data[i].nomor_pegawai %></td>
-                                                <td data-label="Jabatan"><%= data[i].jabatan || '-' %></td>
+                                                <td data-label="Aplikasi"><%= data[i].aplikasi || '-' %></td>
                                                 <td data-label="Status">
                                                     <% if (data[i].status_akun === 'Aktif') { %>
                                                         <span class="badge badge-status badge-status-active">Aktif</span>
@@ -45,7 +45,9 @@
                                                 </td>
                                                 <td class="text-right" data-label="Aksi">
                                                     <div class="btn-actions">
-                                                        <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEdit<%= data[i].nomor_pegawai %>">Edit Status</button>
+                                                        <% if (data[i].status_akun !== null) { %>
+                                                            <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEdit<%= data[i].nomor_pegawai %>">Edit Status</button>
+                                                        <% } %>
                                                         <% if (data[i].status_akun === 'Aktif') { %>
                                                             <button type="button" class="btn btn-sm btn-outline-warning btn-reset-password" data-url="/admin/pegawai/reset-password/<%= data[i].id %>">Reset Password</button>
                                                         <% } %>
@@ -73,34 +75,36 @@
 
 <% if (Array.isArray(data) && data.length) { %>
     <% for (let i = 0; i < data.length; i++) { %>
-        <div class="modal fade modal-below-navbar" id="modalEdit<%= data[i].nomor_pegawai %>" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Status Pegawai</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="/admin/pegawai/update-status-account/<%= data[i].nomor_pegawai %>" method="POST">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="status_akun_<%= data[i].id %>">Status Akun</label>
-                                <select class="form-control" id="status_akun_<%= data[i].id %>" name="status_akun" required>
-                                    <option value="Aktif" <%= (data[i].status_akun === 'Aktif') ? 'selected' : '' %>>Aktif</option>
-                                    <option value="Proses" <%= (data[i].status_akun === 'Proses' || data[i].status_akun === null) ? 'selected' : '' %>>Proses</option>
-                                    <option value="Non-Aktif" <%= data[i].status_akun === 'Non-Aktif' ? 'selected' : '' %>>Non-Aktif</option>
-                                </select>
+        <% if (data[i].status_akun !== null) { %>
+            <div class="modal fade modal-below-navbar" id="modalEdit<%= data[i].nomor_pegawai %>" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Status Pegawai</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/admin/pegawai/update-status-account/<%= data[i].nomor_pegawai %>" method="POST">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="status_akun_<%= data[i].id %>">Status Akun</label>
+                                    <select class="form-control" id="status_akun_<%= data[i].id %>" name="status_akun" required>
+                                        <option value="Aktif" <%= (data[i].status_akun === 'Aktif') ? 'selected' : '' %>>Aktif</option>
+                                        <option value="Proses" <%= (data[i].status_akun === 'Proses') ? 'selected' : '' %>>Proses</option>
+                                        <option value="Non-Aktif" <%= data[i].status_akun === 'Non-Aktif' ? 'selected' : '' %>>Non-Aktif</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        <% } %>
     <% } %>
 <% } %>
 
