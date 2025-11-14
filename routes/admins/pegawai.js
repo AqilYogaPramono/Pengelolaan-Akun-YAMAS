@@ -120,7 +120,7 @@ router.post('/delete/:id', authAdmin, async (req, res) => {
         const {id} = req.params
 
         const pegawai = await Pegawai.getById(id)
-        if (pegawai.status_akun !=  'Non-Aktif') {
+        if (pegawai.status_akun != 'Non-Aktif' && pegawai.status_akun != null) {
             req.flash('error', 'Ubah Status Akun menjadi Non-Aktif untuk menghapus Akun')
             return res.redirect('/admin/pegawai')
         }

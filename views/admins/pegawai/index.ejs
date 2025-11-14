@@ -31,7 +31,17 @@
                                                 <td data-label="No"><%= i + 1 %></td>
                                                 <td data-label="Nama"><%= data[i].nama %></td>
                                                 <td data-label="NP"><%= data[i].nomor_pegawai %></td>
-                                                <td data-label="Aplikasi"><%= data[i].aplikasi || '-' %></td>
+                                                <td data-label="Aplikasi">
+                                                    <% if (Array.isArray(data[i].aplikasi) && data[i].aplikasi.length > 0) { %>
+                                                        <div class="aplikasi-badges">
+                                                            <% data[i].aplikasi.forEach(function(app){ %>
+                                                                <span class="badge-aplikasi"><%= app.nama_aplikasi %></span>
+                                                            <% }) %>
+                                                        </div>
+                                                    <% } else { %>
+                                                        -
+                                                    <% } %>
+                                                </td>
                                                 <td data-label="Status">
                                                     <% if (data[i].status_akun === 'Aktif') { %>
                                                         <span class="badge badge-status badge-status-active">Aktif</span>
@@ -51,7 +61,7 @@
                                                         <% if (data[i].status_akun === 'Aktif') { %>
                                                             <button type="button" class="btn btn-sm btn-outline-warning btn-reset-password" data-url="/admin/pegawai/reset-password/<%= data[i].id %>">Reset Password</button>
                                                         <% } %>
-                                                        <% if (data[i].status_akun === 'Non-Aktif') { %>
+                                                        <% if (data[i].status_akun === 'Non-Aktif' || data[i].status_akun === null) { %>
                                                             <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/admin/pegawai/delete/<%= data[i].id %>">Hapus</button>
                                                         <% } %>
                                                     </div>

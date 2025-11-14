@@ -59,7 +59,11 @@ class Pegawai {
 
     static async getAll() {
         try {
-            const [rows] = await connection.query(`SELECT p.id, p.nama, p.nomor_pegawai, p.status_akun, COALESCE( GROUP_CONCAT( DISTINCT CONCAT(a.nama_aplikasi, ' - ', a.hak_akses) ORDER BY a.nama_aplikasi SEPARATOR ', ' ), '-' ) AS aplikasi FROM pegawai AS p LEFT JOIN pegawai_aplikasi AS pa ON p.id = pa.id_pegawai LEFT JOIN aplikasi AS a ON pa.id_aplikasi = a.id GROUP BY p.id, p.nama, p.nomor_pegawai, p.status_akun ORDER BY p.waktu_dibuat DESC`)
+            const [rows] = await connection.query(`SELECT p.id, p.nama, p.nomor_pegawai, p.status_akun FROM pegawai AS p ORDER BY p.waktu_dibuat DESC`)
+            for (let i = 0; i < rows.length; i++) {
+                const [aplikasiRows] = await connection.query(`SELECT CONCAT(a.nama_aplikasi, ' - ', a.hak_akses) AS nama_aplikasi FROM pegawai_aplikasi AS pa INNER JOIN aplikasi AS a ON pa.id_aplikasi = a.id WHERE pa.id_pegawai = ? ORDER BY a.nama_aplikasi`, [rows[i].id])
+                rows[i].aplikasi = aplikasiRows.length > 0 ? aplikasiRows : []
+            }
             return rows
         } catch (err) {
             throw err
