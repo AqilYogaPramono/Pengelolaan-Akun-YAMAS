@@ -16,6 +16,7 @@
                     <table class="table table-hover table-stacked">
                       <thead>
                         <tr>
+                          <th>No</th>
                           <th>Nama Aplikasi</th>
                           <th>Hak Akses</th>
                           <th style="width: 160px;" class="text-right">Aksi</th>
@@ -23,8 +24,9 @@
                       </thead>
                       <tbody>
                         <% if (Array.isArray(aplikasi) && aplikasi.length) { %>
-                          <% aplikasi.forEach(function(item){ %>
+                          <% aplikasi.forEach(function(item, idx){ %>
                             <tr>
+                              <td data-label="No"><%= idx + 1 %></td>
                               <td data-label="Nama Aplikasi"><%= item.nama_aplikasi %></td>
                               <td data-label="Hak Akses"><%= item.hak_akses %></td>
                               <td class="text-right" data-label="Aksi">
@@ -37,7 +39,7 @@
                           <% }) %>
                         <% } else { %>
                           <tr>
-                            <td colspan="3" class="text-center">Belum ada data</td>
+                            <td colspan="4" class="text-center">Belum ada data</td>
                           </tr>
                         <% } %>
                       </tbody>

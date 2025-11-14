@@ -1,4 +1,4 @@
-<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Jabatan' }) %>
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Periode Akun' }) %>
 <%- include('../../partials/navs/__nav-admin.ejs') %>
 <%- include('../../partials/messages/__messages-dashbaord.ejs') %>
 
@@ -8,15 +8,30 @@
             <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Tambah Jabatan</h4>
-                  <form action="/admin/jabatan/create" method="POST" data-loading>
+                  <h4 class="card-title">Tambah Periode Akun</h4>
+                  <form action="/admin/periode/create" method="POST" data-loading>
                     <div class="form-group">
-                      <label for="nama_jabatan">Nama Jabatan</label>
-                      <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan" placeholder="Masukkan nama jabatan" value="<%= (typeof data != 'undefined' && data.nama_jabatan) || '' %>" required>
+                      <label for="id_pegawai">Pegawai</label>
+                      <select class="form-control" id="id_pegawai" name="id_pegawai" required>
+                        <option value="" disabled <%= (typeof data === 'undefined' || !data.id_pegawai) ? 'selected' : '' %>>Pilih pegawai</option>
+                        <% if (Array.isArray(pegawai) && pegawai.length) { %>
+                          <% pegawai.forEach(function(item){ %>
+                            <option value="<%= item.id %>" <%= (typeof data != 'undefined' && data.id_pegawai == item.id) ? 'selected' : '' %>><%= item.nama %> (<%= item.nomor_pegawai %>)</option>
+                          <% }) %>
+                        <% } %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="periode_mulai">Periode Mulai</label>
+                      <input type="datetime-local" class="form-control" id="periode_mulai" name="periode_mulai" value="<%= (typeof data != 'undefined' && data.periode_mulai) || '' %>" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="periode_berakhir">Periode Berakhir</label>
+                      <input type="datetime-local" class="form-control" id="periode_berakhir" name="periode_berakhir" value="<%= (typeof data != 'undefined' && data.periode_berakhir) || '' %>" required>
                     </div>
                     <div class="d-flex">
                       <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                      <a href="/admin/jabatan" class="btn btn-light" data-loading>Kembali</a>
+                      <a href="/admin/periode" class="btn btn-light" data-loading>Kembali</a>
                     </div>
                   </form>
                 </div>

@@ -1,6 +1,18 @@
-<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Jabatan' }) %>
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Periode Akun' }) %>
 <%- include('../../partials/navs/__nav-admin.ejs') %>
 <%- include('../../partials/messages/__messages-dashbaord.ejs') %>
+<% const formatPeriodeDate = (value) => {
+     if (!value) return '-'
+     const date = new Date(value)
+     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+     const month = months[date.getMonth()]
+     const day = (`0${date.getDate()}`).slice(-2)
+     const year = date.getFullYear()
+     const hours = (`0${date.getHours()}`).slice(-2)
+     const minutes = (`0${date.getMinutes()}`).slice(-2)
+     const seconds = (`0${date.getSeconds()}`).slice(-2)
+     return `${month} ${day} ${year} ${hours}:${minutes}:${seconds}`
+} %>
 
 <div class="main-panel">
     <div class="content-wrapper">
@@ -9,33 +21,39 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="card-title mb-0">Data Jabatan</h4>
-                    <a href="/admin/jabatan/buat" class="btn btn-primary btn-sm" data-loading>Tambah Jabatan</a>
+                    <h4 class="card-title mb-0">Daftar Periode Akun</h4>
+                    <a href="/admin/periode/buat" class="btn btn-primary btn-sm" data-loading>Tambah Periode</a>
                   </div>
                   <div>
                     <table class="table table-hover table-stacked">
                       <thead>
                         <tr>
-                          <th>Nama Jabatan</th>
-                          <th style="width: 160px;" class="text-right">Aksi</th>
+                          <th>No</th>
+                          <th>Nama Pegawai</th>
+                          <th>Periode Mulai</th>
+                          <th>Periode Berakhir</th>
+                          <th style="width: 200px;" class="text-right">Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <% if (Array.isArray(jabatan) && jabatan.length) { %>
-                          <% jabatan.forEach(function(item){ %>
+                        <% if (Array.isArray(periode) && periode.length) { %>
+                          <% periode.forEach(function(item, idx){ %>
                             <tr>
-                              <td data-label="Nama Jabatan"><%= item.nama_jabatan %></td>
+                              <td data-label="No"><%= idx + 1 %></td>
+                              <td data-label="Nama Pegawai"><%= item.nama || '-' %></td>
+                              <td data-label="Periode Mulai"><%= formatPeriodeDate(item.periode_mulai) %></td>
+                              <td data-label="Periode Berakhir"><%= formatPeriodeDate(item.periode_berakhir) %></td>
                               <td class="text-right" data-label="Aksi">
                                 <div class="btn-actions">
-                                  <a href="/admin/jabatan/edit/<%= item.id %>" class="btn btn-sm btn-outline-info" data-loading>Edit</a>
-                                  <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/admin/jabatan/hapus/<%= item.id %>">Hapus</button>
+                                  <a href="/admin/periode/edit/<%= item.id %>" class="btn btn-sm btn-outline-info" data-loading>Edit</a>
+                                  <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/admin/periode/hapus/<%= item.id %>">Hapus</button>
                                 </div>
                               </td>
                             </tr>
                           <% }) %>
                         <% } else { %>
                           <tr>
-                            <td colspan="2" class="text-center">Belum ada data</td>
+                            <td colspan="5" class="text-center">Belum ada data</td>
                           </tr>
                         <% } %>
                       </tbody>
