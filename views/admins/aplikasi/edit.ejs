@@ -1,4 +1,4 @@
-<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Jabatan' }) %>
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Aplikasi' }) %>
 <%- include('../../partials/navs/__nav-admin.ejs') %>
 <%- include('../../partials/messages/__messages-dashbaord.ejs') %>
 
@@ -8,15 +8,19 @@
             <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Edit Jabatan</h4>
-                  <form action="/admin/jabatan/update/<%= jabatan.id %>" method="POST" data-loading>
+                  <h4 class="card-title">Edit Aplikasi</h4>
+                  <form action="/admin/aplikasi/update/<%= aplikasi.id %>" method="POST" data-loading>
                     <div class="form-group">
-                      <label for="nama_jabatan">Nama Jabatan</label>
-                      <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan" value="<%= jabatan.nama_jabatan %>" placeholder="Masukkan nama jabatan" required>
+                      <label for="nama_aplikasi">Nama Aplikasi</label>
+                      <input type="text" class="form-control" id="nama_aplikasi" name="nama_aplikasi" value="<%= aplikasi.nama_aplikasi %>" placeholder="Masukkan nama aplikasi" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="hak_akses">Hak Akses</label>
+                      <input type="text" class="form-control" id="hak_akses" name="hak_akses" value="<%= aplikasi.hak_akses %>" placeholder="Masukkan hak akses" required>
                     </div>
                     <div class="d-flex">
                       <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                      <a href="/admin/jabatan" class="btn btn-light" data-loading>Kembali</a>
+                      <a href="/admin/aplikasi" class="btn btn-light" data-loading>Kembali</a>
                     </div>
                   </form>
                 </div>

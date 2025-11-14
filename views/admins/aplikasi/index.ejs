@@ -1,4 +1,4 @@
-<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Jabatan' }) %>
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Aplikasi' }) %>
 <%- include('../../partials/navs/__nav-admin.ejs') %>
 <%- include('../../partials/messages/__messages-dashbaord.ejs') %>
 
@@ -9,33 +9,35 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="card-title mb-0">Data Jabatan</h4>
-                    <a href="/admin/jabatan/buat" class="btn btn-primary btn-sm" data-loading>Tambah Jabatan</a>
+                    <h4 class="card-title mb-0">Data Aplikasi</h4>
+                    <a href="/admin/aplikasi/buat" class="btn btn-primary btn-sm" data-loading>Tambah Aplikasi</a>
                   </div>
                   <div>
                     <table class="table table-hover table-stacked">
                       <thead>
                         <tr>
-                          <th>Nama Jabatan</th>
+                          <th>Nama Aplikasi</th>
+                          <th>Hak Akses</th>
                           <th style="width: 160px;" class="text-right">Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <% if (Array.isArray(jabatan) && jabatan.length) { %>
-                          <% jabatan.forEach(function(item){ %>
+                        <% if (Array.isArray(aplikasi) && aplikasi.length) { %>
+                          <% aplikasi.forEach(function(item){ %>
                             <tr>
-                              <td data-label="Nama Jabatan"><%= item.nama_jabatan %></td>
+                              <td data-label="Nama Aplikasi"><%= item.nama_aplikasi %></td>
+                              <td data-label="Hak Akses"><%= item.hak_akses %></td>
                               <td class="text-right" data-label="Aksi">
                                 <div class="btn-actions">
-                                  <a href="/admin/jabatan/edit/<%= item.id %>" class="btn btn-sm btn-outline-info" data-loading>Edit</a>
-                                  <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/admin/jabatan/hapus/<%= item.id %>">Hapus</button>
+                                  <a href="/admin/aplikasi/edit/<%= item.id %>" class="btn btn-sm btn-outline-info" data-loading>Edit</a>
+                                  <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/admin/aplikasi/hapus/<%= item.id %>">Hapus</button>
                                 </div>
                               </td>
                             </tr>
                           <% }) %>
                         <% } else { %>
                           <tr>
-                            <td colspan="2" class="text-center">Belum ada data</td>
+                            <td colspan="3" class="text-center">Belum ada data</td>
                           </tr>
                         <% } %>
                       </tbody>

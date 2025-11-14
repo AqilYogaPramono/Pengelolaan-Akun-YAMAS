@@ -1,6 +1,7 @@
 const express = require('express')
 
 const Admin = require('../../models/Admin')
+const Aplikasi = require('../../models/Aplikasi')
 const { authAdmin } = require('../../middlewares/auth')
 
 const router = express.Router()
@@ -8,8 +9,9 @@ const router = express.Router()
 router.get('/', authAdmin, async (req, res) => {
     try {
         const admin = await Admin.getNama(req.session.adminId)
+        const aplikasi = await Aplikasi.getAll()
 
-        res.render('admins/jabatan/index', {admin})
+        res.render('admins/aplikasi/index', {admin, aplikasi})
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
@@ -21,100 +23,117 @@ router.get('/buat', authAdmin, async (req, res) => {
     try {
         const admin = await Admin.getNama(req.session.adminId)
 
-        res.render('admins/jabatan/create', {
+        res.render('admins/aplikasi/create', {
             admin,
             data: req.flash('data')[0]
         })
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/admin/dashboard')
+        res.redirect('/admin/aplikasi')
     }
 })
 
 router.post('/create', authAdmin, async (req, res) => {
     try {
-        const { nama_jabatan } = req.body
-        const data = { nama_jabatan }
+        const { nama_aplikasi, hak_akses } = req.body
+        const data = { nama_aplikasi, hak_akses }
 
-        if (!nama_jabatan) {
-            req.flash('error', 'Nama jabatan wajib diisi')
+        if (!nama_aplikasi) {
+            req.flash('error', 'Nama Aplikasi wajib diisi')
             req.flash('data', data)
-            return res.redirect('/admin/jabatan/buat')
+            return res.redirect('/admin/aplikasi/buat')
         }
 
-        if (await Jabatan.checkNamaJabatanStore(data)) {
-            req.flash('error', 'Nama jabatan sudah ditambahkan sebelumnya')
+        if (!hak_akses) {
+            req.flash('error', 'Hak Akses wajib diisi')
             req.flash('data', data)
-            return res.redirect('/admin/jabatan/buat')
+            return res.redirect('/admin/aplikasi/buat')
         }
 
-        req.flash('success', 'Jabatan berhasil dibuat')
-        res.redirect('/admin/jabatan')
+        if (await Aplikasi.checkNamaAplikasiStore(data)) {
+            req.flash('error', 'Nama Aplikasi sudah ditambahkan sebelumnya')
+            req.flash('data', data)
+            return res.redirect('/admin/aplikasi/buat')
+        }
+
+        await Aplikasi.store(data)
+        req.flash('success', 'Aplikasi berhasil dibuat')
+        res.redirect('/admin/aplikasi')
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/admin/dashboard')
+        res.redirect('/admin/aplikasi')
     }
 })
 
 router.get('/edit/:id', authAdmin, async (req, res) => {
     try {
+        const {id} = req.params
         const admin = await Admin.getNama(req.session.adminId)
+        const aplikasi = await Aplikasi.getById(id)
 
-        res.render('admins/jabatan/edit', {
+        res.render('admins/aplikasi/edit', {
             admin,
-            jabatan,
+            aplikasi,
         })
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/admin/dashboard')
+        res.redirect('/admin/aplikasi')
     }
 })
 
 router.post('/update/:id', authAdmin, async (req, res) => {
     try {
-        const { nama_jabatan } = req.body
-        const id = req.params.id
-        const data = { nama_jabatan }
+        const { nama_aplikasi, hak_akses } = req.body
+        const {id} = req.params
+        const data = { nama_aplikasi, hak_akses }
 
-        if (!nama_jabatan) {
-            req.flash('error', 'Nama jabatan wajib diisi')
+        if (!nama_aplikasi) {
+            req.flash('error', 'Nama Aplikasi wajib diisi')
             req.flash('data', data)
-            return res.redirect(`/admin/jabatan/edit/${id}`)
+            return res.redirect(`/admin/aplikasi/edit/${id}`)
         }
 
-        if (await Jabatan.checkNamaJabatanUpdate(data, id)) {
-            req.flash('error', 'Nama jabatan sudah ditambahkan sebelumnya')
+        if (!hak_akses) {
+            req.flash('error', 'Hak Akses wajib diisi')
             req.flash('data', data)
-            return res.redirect(`/admin/jabatan/edit/${id}`)
+            return res.redirect(`/admin/aplikasi/edit/${id}`)
         }
 
-        req.flash('success', 'Jabatan berhasil diperbarui')
-        res.redirect('/admin/jabatan')
+        if (await Aplikasi.checkNamaAplikasiUpdate(data, id)) {
+            req.flash('error', 'Nama Aplikasi sudah ditambahkan sebelumnya')
+            req.flash('data', data)
+            return res.redirect(`/admin/aplikasi/edit/${id}`)
+        }
+
+        await Aplikasi.update(data, id)
+        req.flash('success', 'Aplikasi berhasil diperbarui')
+        res.redirect('/admin/aplikasi')
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/admin/dashboard')
+        res.redirect('/admin/aplikasi')
     }
 })
 
 router.post('/hapus/:id', authAdmin, async (req, res) => {
     try {
-        const id = req.params.id
+        const {id} = req.params
 
-        if (await Jabatan.checkJabatanUsed(id)) {
-            req.flash('error', 'Jabatan sedang digunakan')
-            return res.redirect('/admin/jabatan')
+        if (await Aplikasi.checkAplikasiUsed(id)) {
+            req.flash('error', 'Nama Aplikasi sedang digunakan')
+            return res.redirect('/admin/aplikasi')
         }
 
-        req.flash('success', 'Jabatan berhasil dihapus')
-        res.redirect('/admin/jabatan')
+        await Aplikasi.delete(id)
+        req.flash('success', 'Nama Aplikasi berhasil dihapus')
+        res.redirect('/admin/aplikasi')
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
-        res.redirect('/admin/dashboard')
+        res.redirect('/admin/aplikasi')
     }
 })
 
