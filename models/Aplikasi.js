@@ -10,6 +10,17 @@ class Aplikasi {
         }
     }
 
+    static async checkStore(data) {
+        try {
+            console.log(data)
+            const [rows] = await connection.query('select id from aplikasi where nama_aplikasi = ? and hak_akses = ?', [data.nama_aplikasi, data.hak_akses])
+            console.log(rows)
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
+    }
+
     static async store(data) {
         try {
             const [result] = await connection.query('INSERT INTO aplikasi set ?', [data])
@@ -23,6 +34,17 @@ class Aplikasi {
         try {
             const [rows] = await connection.query('SELECT * FROM aplikasi WHERE id = ?', [id])
             return rows[0]
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async checkUpdate(data, id) {
+        try {
+            console.log(data)
+            const [rows] = await connection.query('select id from aplikasi where nama_aplikasi = ? and hak_akses = ? and id != ?', [data.nama_aplikasi, data.hak_akses, id])
+            console.log(rows)
+            return rows.length > 0
         } catch (err) {
             throw err
         }

@@ -1,6 +1,14 @@
 <%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Periode Akun' }) %>
 <%- include('../../partials/navs/__nav-admin.ejs') %>
 <%- include('../../partials/messages/__messages-dashbaord.ejs') %>
+<% const formatDateTimeInput = (value) => {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - (offset * 60000));
+    return localDate.toISOString().slice(0, 16);
+} %>
 
 <div class="main-panel">
     <div class="content-wrapper">
@@ -16,11 +24,11 @@
                     </div>
                     <div class="form-group">
                       <label for="periode_mulai">Periode Mulai</label>
-                      <input type="datetime-local" class="form-control" id="periode_mulai" name="periode_mulai" value="<%= (typeof data != 'undefined' && data.periode_mulai) || periode.periode_mulai %>" required>
+                      <input type="datetime-local" class="form-control" id="periode_mulai" name="periode_mulai" value="<%= formatDateTimeInput((typeof data !== 'undefined' && data && data.periode_mulai) || periode.periode_mulai) %>" required>
                     </div>
                     <div class="form-group">
                       <label for="periode_berakhir">Periode Berakhir</label>
-                      <input type="datetime-local" class="form-control" id="periode_berakhir" name="periode_berakhir" value="<%= (typeof data != 'undefined' && data.periode_berakhir) || periode.periode_berakhir %>" required>
+                      <input type="datetime-local" class="form-control" id="periode_berakhir" name="periode_berakhir" value="<%= formatDateTimeInput((typeof data !== 'undefined' && data && data.periode_berakhir) || periode.periode_berakhir) %>" required>
                     </div>
                     <div class="d-flex">
                       <button type="submit" class="btn btn-primary mr-2">Simpan</button>

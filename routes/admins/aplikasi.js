@@ -51,6 +51,12 @@ router.post('/create', authAdmin, async (req, res) => {
             return res.redirect('/admin/aplikasi/buat')
         }
 
+        if (await Aplikasi.checkStore(data)) {
+            req.flash('error', 'Nama Aplikasi dan Hak Akses sudah dibuat')
+            req.flash('data', data)
+            return res.redirect('/admin/aplikasi/buat')
+        }
+
         await Aplikasi.store(data)
         req.flash('success', 'Aplikasi berhasil dibuat')
         res.redirect('/admin/aplikasi')
@@ -96,6 +102,12 @@ router.post('/update/:id', authAdmin, async (req, res) => {
             return res.redirect(`/admin/aplikasi/edit/${id}`)
         }
 
+        if (await Aplikasi.checkUpdate(data, id)) {
+            req.flash('error', 'Nama Aplikasi dan Hak Akses sudah dibuat')
+            req.flash('data', data)
+            return res.redirect(`/admin/aplikasi/edit/${id}`)
+        }
+
         await Aplikasi.update(data, id)
         req.flash('success', 'Aplikasi berhasil diperbarui')
         res.redirect('/admin/aplikasi')
@@ -111,7 +123,7 @@ router.post('/hapus/:id', authAdmin, async (req, res) => {
         const {id} = req.params
 
         if (await Aplikasi.checkAplikasiUsed(id)) {
-            req.flash('error', 'Nama Aplikasi sedang digunakan')
+            req.flash('error', 'Aplikasi sedang digunakan')
             return res.redirect('/admin/aplikasi')
         }
 

@@ -3,11 +3,7 @@ const connection = require('../configs/database')
 class Periode {
     static async getAll() {
         try {
-            const [rows] = await connection.query(`
-                SELECT pr.id, pr.id_pegawai, pr.periode_mulai, pr.periode_berakhir, pg.nama
-                FROM periode pr
-                LEFT JOIN pegawai pg ON pg.id = pr.id_pegawai
-                ORDER BY pr.periode_mulai DESC
+            const [rows] = await connection.query(`SELECT pr.id, pr.id_pegawai, pr.periode_mulai, pr.periode_berakhir, pg.nama FROM periode pr LEFT JOIN pegawai pg ON pg.id = pr.id_pegawai ORDER BY pr.periode_mulai DESC
             `)
             return rows
         } catch (err) {
@@ -26,12 +22,7 @@ class Periode {
 
     static async getById(id) {
         try {
-            const [rows] = await connection.query(`
-                SELECT pr.id, pr.id_pegawai, pr.periode_mulai, pr.periode_berakhir, pg.nama
-                FROM periode pr
-                LEFT JOIN pegawai pg ON pg.id = pr.id_pegawai
-                WHERE pr.id = ?
-            `, [id])
+            const [rows] = await connection.query(`SELECT pr.id, pr.id_pegawai, pr.periode_mulai, pr.periode_berakhir, pg.nama FROM periode pr LEFT JOIN pegawai pg ON pg.id = pr.id_pegawai WHERE pr.id = ?`, [id])
             return rows[0]
         } catch (err) {
             throw err
