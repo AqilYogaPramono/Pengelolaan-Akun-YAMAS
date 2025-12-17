@@ -123,7 +123,7 @@ router.post('/log', async (req, res) => {
         const admin = await Admin.login(data)
 
         if (!admin) {
-            req.flash('error', 'Nomor pegawai tidak ditemukan')
+            req.flash('error', 'Nomor Admin tidak ditemukan')
             req.flash('data', data)
             return res.redirect('/')
         }
