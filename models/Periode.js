@@ -3,7 +3,7 @@ const connection = require('../configs/database')
 class Periode {
     static async getAll() {
         try {
-            const [rows] = await connection.query(`SELECT pr.id, pr.id_pegawai, pr.periode_mulai, pr.periode_berakhir, pg.nama FROM periode pr LEFT JOIN pegawai pg ON pg.id = pr.id_pegawai ORDER BY pr.periode_mulai DESC
+            const [rows] = await connection.query(`SELECT pr.id, pr.id_pegawai, pr.periode_mulai, pr.periode_berakhir, pg.nama FROM periode pr LEFT JOIN pegawai pg ON pg.id = pr.id_pegawai ORDER BY pr.id DESC
             `)
             return rows
         } catch (err) {

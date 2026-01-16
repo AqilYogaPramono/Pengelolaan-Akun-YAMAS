@@ -17,10 +17,10 @@ router.get('/daftar-ulang', async (req, res) => {
 })
 
 router.post('/reg', async (req, res) => {
-    const { nomor_pegawai, kata_sandi, konfirmasi_kata_sandi } = req.body
-    const data = { nomor_pegawai, kata_sandi }
-
     try {
+        const { nomor_pegawai, kata_sandi, konfirmasi_kata_sandi } = req.body
+        const data = { nomor_pegawai, kata_sandi }
+        
         if (!data.nomor_pegawai) {
             req.flash('error', 'Nomor pegawai tidak boleh kosong')
             req.flash('data', data)

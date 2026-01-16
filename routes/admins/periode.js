@@ -1,7 +1,6 @@
 const express = require('express')
 
 const Admin = require('../../models/Admin')
-const Pegawai = require('../../models/Pegawai')
 const Periode = require('../../models/Periode')
 const { authAdmin } = require('../../middlewares/auth')
 

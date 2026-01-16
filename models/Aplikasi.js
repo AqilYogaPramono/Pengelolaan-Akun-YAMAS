@@ -3,7 +3,7 @@ const connection = require('../configs/database')
 class Aplikasi {
     static async getAll() {
         try {
-            const [rows] = await connection.query('SELECT * FROM aplikasi')
+            const [rows] = await connection.query('SELECT * FROM aplikasi order by id desc')
             return rows
         } catch (err) {
             throw err
