@@ -1,0 +1,23 @@
+[
+  {
+    "nama_aplikasi": "pengolaan-konten",
+    "hak_akses": "manajer"
+  },
+  {
+    "nama_aplikasi": "e-katalog",
+    "hak_akses": "pustakawan"
+  },
+  {
+    "nama_aplikasi": "e-katalog",
+    "hak_akses": "manajer"
+  },
+  {
+    "nama_aplikasi": "blog",
+    "hak_akses": "pustakawan"
+  },
+  {
+    "nama_aplikasi": "blog",
+    "hak_akses": "manajer"
+  }
+]
+

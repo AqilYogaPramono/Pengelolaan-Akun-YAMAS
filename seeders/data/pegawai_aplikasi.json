@@ -1,0 +1,53 @@
+[
+  {
+    "nomor_pegawai": "2026-001",
+    "nama_aplikasi": "pengolaan-konten",
+    "hak_akses": "manajer"
+  },
+  {
+    "nomor_pegawai": "2026-001",
+    "nama_aplikasi": "e-katalog",
+    "hak_akses": "pustakawan"
+  },
+  {
+    "nomor_pegawai": "2026-001",
+    "nama_aplikasi": "e-katalog",
+    "hak_akses": "manajer"
+  },
+  {
+    "nomor_pegawai": "2026-001",
+    "nama_aplikasi": "blog",
+    "hak_akses": "pustakawan"
+  },
+  {
+    "nomor_pegawai": "2026-001",
+    "nama_aplikasi": "blog",
+    "hak_akses": "manajer"
+  },
+  {
+    "nomor_pegawai": "2026-002",
+    "nama_aplikasi": "pengolaan-konten",
+    "hak_akses": "manajer"
+  },
+  {
+    "nomor_pegawai": "2026-003",
+    "nama_aplikasi": "e-katalog",
+    "hak_akses": "pustakawan"
+  },
+  {
+    "nomor_pegawai": "2026-004",
+    "nama_aplikasi": "e-katalog",
+    "hak_akses": "manajer"
+  },
+  {
+    "nomor_pegawai": "2026-005",
+    "nama_aplikasi": "blog",
+    "hak_akses": "pustakawan"
+  },
+  {
+    "nomor_pegawai": "2026-006",
+    "nama_aplikasi": "blog",
+    "hak_akses": "manajer"
+  }
+]
+

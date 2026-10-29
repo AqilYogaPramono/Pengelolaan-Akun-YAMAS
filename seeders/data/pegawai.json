@@ -1,0 +1,39 @@
+[
+  {
+    "nama": "Arka Pratama",
+    "nomor_pegawai": "2026-001",
+    "password_raw": "Pegawai123",
+    "status_akun": "Aktif"
+  },
+  {
+    "nama": "Bagas Dahani",
+    "nomor_pegawai": "2026-002",
+    "password_raw": "Pegawai123",
+    "status_akun": "Aktif"
+  },
+  {
+    "nama": "Bintang Ramadhan",
+    "nomor_pegawai": "2026-003",
+    "password_raw": "Pegawai123",
+    "status_akun": "Aktif"
+  },
+  {
+    "nama": "Aulia Rahma",
+    "nomor_pegawai": "2026-004",
+    "password_raw": "Pegawai123",
+    "status_akun": "Aktif"
+  },
+  {
+    "nama": "Citra Kirana",
+    "nomor_pegawai": "2026-005",
+    "password_raw": "Pegawai123",
+    "status_akun": "Aktif"
+  },
+  {
+    "nama": "Nadhira Putri",
+    "nomor_pegawai": "2026-006",
+    "password_raw": "Pegawai123",
+    "status_akun": "Aktif"
+  }
+]
+
